@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>It's Monday. It's always Monday.</title>
+<meta name="description" content="It's Monday. It's always Monday.">
+<meta name="twitter:description" content="It's Monday. It's always Monday.">
+<meta name="twitter:card" content="summary" >
+<meta name="twitter:site" content="@ThatBlairGuy" >
+<meta name="twitter:title" content="It's Monday. It's always Monday." >
+<style>
+    .show {
+        display: block;
+    }
+    .hide {
+        display: none;
+    }
+</style>
+<script>
+    const dayName = ['Pre-Monday', 'Monday', 'Second Monday', 'Third Monday', 'Fourth Monday', 'Fifth Monday', 'Saturday'];
+    const monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'];
+
+    function update() {
+        const now = new Date();
+
+        setField('today',    dayName[now.getDay()]);
+        setField('day',      nth(now.getDate()));
+        setField('month',    monthName[now.getMonth()]);
+        setField('year',     now.getFullYear());
+        setField('hour',     numpad(twelveHour(now.getHours())));
+        setField('minute',   numpad(now.getMinutes()));
+        setField('second',   numpad(now.getSeconds()));
+        setField('meridian', meridian(now.getHours()));
+    }
+
+    function nth(int) {
+        let extension = 'th';
+        switch (int) {
+            case 1: extension = 'st'; break;
+            case 2: extension = 'nd'; break;
+            case 3: extension = 'rd'; break;
+        }
+        return `${int}${extension}`;
+    }
+
+    function twelveHour(hour) {
+        if (hour == 0) return 12;
+        else if (hour > 12) return hour - 12;
+        return hour;
+    }
+
+    function meridian(hour) {
+        return (hour > 11 ) ? 'PM' : 'AM';
+    }
+
+    function numpad(int) {
+        return (int < 10) ? `0${int}` : int;
+    }
+
+    function setField(field, value) {
+        let fld = document.getElementById(field);
+        fld.innerText = value;
+    }
+
+    function activate() {
+        update();
+        document.getElementById('sorry').className = "hide";
+        document.getElementById('display').className = "show";
+        setInterval(update, 1000);
+    }
+</script>
+</head>
+<body>
+    <h1>What day is it anyhow?</h1>
+
+    <p id="sorry" class="show">You need to enable JavaScript. Sorry.</p>
+    <div id="display" class="hide">
+    <p>Today is <span id="today">Monday</span>, the <span id="day"></span> day of <span id="month"></span> in <span id="year"></span>.</p>
+
+    <p>The time is <span id="hour"></span>:<span id="minute"></span>:<span id="second"></span> <span id="meridian"></span></p>
+    </div>
+    <script>activate();</script>
+
+    <p>[<a href="https://github.com/thatblairguy/worst-timeline-what-day">GitHub</a>]</p>
+</body>
+</html>
